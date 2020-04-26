@@ -1,4 +1,5 @@
 {-# language BangPatterns #-}
+{-# language CPP #-}
 {-# language PatternGuards #-}
 {-# language TypeFamilies #-}
 {-# language LambdaCase #-}
@@ -202,7 +203,11 @@ import Data.Bits (shiftL, shiftR)
 import Data.Data
 import Data.Default.Class
 import qualified Data.List as List
+#if __GLASGOW_HASKELL__ < 804
 import Data.Semigroup (Semigroup((<>), stimes), stimesIdempotentMonoid)
+#else
+import Data.Semigroup (Semigroup(stimes), stimesIdempotentMonoid)
+#endif
 import GHC.Exts (build, lazy, isTrue#, reallyUnsafePtrEquality#)
 import qualified GHC.Exts as GHCExts
 import Prelude hiding (filter,foldMap,foldl,foldr,null,map,take,drop,splitAt)

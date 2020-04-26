@@ -1,4 +1,5 @@
 {-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE MagicHash #-}
 {-# LANGUAGE PatternGuards #-}
 {-# LANGUAGE RoleAnnotations #-}
@@ -105,7 +106,9 @@ import Data.Hashable (Hashable)
 import qualified Data.Hashable as H
 import qualified Data.Hashable.Lifted as H
 import qualified Data.List as L
-import Data.Semigroup (Semigroup((<>)))
+#if __GLASGOW_HASKELL__ < 804
+import Data.Semigroup (Semigroup(..))
+#endif
 import GHC.Exts ((==#), build, reallyUnsafePtrEquality#, isTrue#)
 import qualified GHC.Exts as Exts
 import Prelude hiding (filter, foldr, lookup, map, null, pred)
@@ -1031,7 +1034,7 @@ filterWithKey pred = filterMapAux onLeaf onColl
 
 -- | Common implementation for 'filterWithKey' and 'mapMaybeWithKey',
 --   allowing the former to former to reuse terms.
-filterMapAux :: forall v1 v2. 
+filterMapAux :: forall v1 v2.
                 (HashMap v1 -> Maybe (HashMap v2))
              -> (Leaf v1 -> Maybe (Leaf v2))
              -> HashMap v1

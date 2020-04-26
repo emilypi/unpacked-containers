@@ -1,4 +1,5 @@
 {-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE PatternGuards #-}
 {-# LANGUAGE Trustworthy #-}
 {-# LANGUAGE RoleAnnotations #-}
@@ -328,7 +329,11 @@ import Data.Coerce
 import Data.Data
 import Data.Functor.Classes
 import Data.Functor.Identity (Identity (..))
+#if __GLASGOW_HASKELL__ < 804
 import Data.Semigroup (Semigroup((<>), stimes), stimesIdempotentMonoid)
+#else
+import Data.Semigroup (Semigroup(stimes), stimesIdempotentMonoid)
+#endif
 import GHC.Exts (build, lazy, Proxy#, proxy# )
 import Prelude hiding (lookup, map, filter, foldr, foldl, null, splitAt, take, drop)
 import Text.Read hiding (lift)
@@ -3781,4 +3786,3 @@ splitRoot orig =
     Tip           -> []
     Bin _ k v l r -> [l, singleton k v, r]
 {-# INLINE splitRoot #-}
-

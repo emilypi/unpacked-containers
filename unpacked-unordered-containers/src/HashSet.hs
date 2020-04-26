@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE Trustworthy #-}
 {-# LANGUAGE FlexibleContexts #-}
@@ -71,7 +72,9 @@ module HashSet
 import Control.DeepSeq (NFData(..))
 import Data.Data hiding (Typeable)
 import Data.Hashable (Hashable(hashWithSalt))
+#if __GLASGOW_HASKELL__ < 804
 import Data.Semigroup (Semigroup(..))
+#endif
 import GHC.Exts (build)
 import Prelude hiding (filter, foldr, map, null)
 import qualified Data.List as List
